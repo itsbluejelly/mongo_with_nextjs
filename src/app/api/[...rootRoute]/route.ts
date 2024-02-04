@@ -1,10 +1,13 @@
-// IMPORTING NECESSARY TYPES
+// IMPORTING NECESSARY FILES
+    // IMPORTING SERVER ITEMS
 import { NextRequest, NextResponse } from "next/server";
+    // IMPORTING MIDDLEWARE
+import eventLogger from "@/libs/eventLogger";
 
 // AN ENDPOINT FOR THE ROOTROUTE
-export function GET(request: NextRequest){
-    return NextResponse.json({
-        path: request.nextUrl,
-        method: request.method
-    }, { status: 200 })
+function handler(request: NextRequest){
+    eventLogger(request.nextUrl.pathname, request.method, "eventLogs.txt")
+    return NextResponse.json({})
 }
+
+export {handler as GET, handler as POST, handler as PUT, handler as DELETE}
