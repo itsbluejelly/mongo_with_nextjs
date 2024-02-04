@@ -1,7 +1,6 @@
 // IMPORTING NECESSARY FILES
     // IMPORTING MODULES
 import * as bcrypt from "bcryptjs"
-import {jwtSign} from "@/libs/jwtVerifier"
 import {isEmail} from "validator"
     // IMPORTING SERVER ITEMS
 import {NextRequest, NextResponse} from "next/server"
@@ -23,11 +22,6 @@ export async function DELETE(request: NextRequest){
         // DESTRUCTURING THE EMAIL, PASSWORD AND USERID FROM THE REQUEST
         const {email, password} = await request.json()
         const {_id:userID} = properRequest.storedUser
-
-        if(!userID){
-            eventLogger("401: Unauthorized", "You are not registered in our database, try logging in or signing up", "errorLogs.txt")
-            return NextResponse.json({ error:  "You are not registered in our database, try logging in or signing up" }, { status: 401 })
-        }
 
         if(!email){
             eventLogger("400: Bad Request", "Missing email property" , "errorLogs.txt")
