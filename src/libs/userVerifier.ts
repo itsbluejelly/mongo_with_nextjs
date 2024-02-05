@@ -5,38 +5,34 @@ import {NextRequest, NextResponse} from "next/server"
 import {verifyJWT} from "@/libs/jwtVerifier"
 import eventLogger from "./eventLogger"
     // IMPORTING TYPES
-import {Types, isValidObjectId} from "mongoose"
-import { UserID } from "@/libs/jwtVerifier"
-
-// DEFINING A GENERIC FOR FORMATTING INTERSECTION TYPES
-export type Prettier<Type extends object> = {
-    [name in keyof Type] : Type[name]
-}
-
-// DEFINING THE PROPERREQUEST TYPE
-export type ProperRequest = Prettier<NextRequest & { storedUser: { _id: Types.ObjectId }}>
+import { UserID } from "@/types/Types"
+import {ProperRequest} from "@/types/Types"
+    // IMPORTING MODULES
+import {isValidObjectId} from "mongoose"
+import {cookies} from "next/headers"
+    // IMPORTING ENUMS
+import {STATUS_CODES} from "@/types/Enums"
 
 // EXPORTING A MIDDLWARE THAT CHECKS FOR THE JWT THAT HOLDS THE USER ID
 export default function userVerifier(request: NextRequest){
     try{
-        // GET THE STRING FROM THE AUTH HEADER
-        const authorization: string | null = request.headers.get('authorization')
+        // GET THE TOKEN FROM THE USERID HEADER
+        const token: string | undefined = request.cookies.get("userID")?.value
 
-        if(!authorization){
-            eventLogger("400: Bad Request", "Missing authorization header in request", "errorLogs.txt")
-            return NextResponse.json({ error:  "Missing authorization header in request" }, { status: 400 })
+        if(!token){
+            eventLogger(`${STATUS_CODES.BAD_REQUEST}: Bad Request`, "Missing userID cookie in request", "errorLogs.txt")
+            return NextResponse.json({ error:  "Missing userID cookie in request" }, { status: STATUS_CODES.BAD_REQUEST })
         }
 
-        // OBTAIN THE TOKEN FROM THE HEADER
-        const token: string = authorization.split(' ')[1]
+        // OBTAIN THE USERID FROM THE TOKEN
         const {_id} = verifyJWT(token) as UserID
 
         if(!_id){
-            eventLogger("401: Unauthorized", "You are not registered in our database, try logging in or signing up", "errorLogs.txt")
-            return NextResponse.json({ error:  "You are not registered in our database, try logging in or signing up" }, { status: 401 })
+            eventLogger(`${STATUS_CODES.UNAUTHORIZED}: Unauthorized`, "You are not registered in our database, try logging in or signing up", "errorLogs.txt")
+            return NextResponse.json({ error:  "You are not registered in our database, try logging in or signing up" }, { status: STATUS_CODES.UNAUTHORIZED })
         }else if(!isValidObjectId(_id)){
-            eventLogger("403: Forbidden", "Tampered token detected", "errorLogs.txt")
-            return NextResponse.json({ error:  "Tampered token detected" }, { status: 403 })
+            eventLogger(`${STATUS_CODES.FORBIDDEN}: Forbidden`, "Tampered token detected", "errorLogs.txt")
+            return NextResponse.json({ error:  "Tampered token detected" }, { status: STATUS_CODES.FORBIDDEN })
         }
 
         // APPEND THE USERID TO THE REQUEST
@@ -45,6 +41,6 @@ export default function userVerifier(request: NextRequest){
         return newRequest
     }catch(error: unknown){
         eventLogger((error as Error).name, (error as Error).message, "errorLogs.txt")
-        return NextResponse.json({ error: (error as Error).message }, { status: 500 })
+        return NextResponse.json({ error: (error as Error).message }, { status: STATUS_CODES.INTERNAL_SERVER_ERROR })
     }
 }

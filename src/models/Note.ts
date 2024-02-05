@@ -2,14 +2,7 @@
     // IMPORTING MODULES
 import mongoose from "mongoose"
     // IMPORTING TYPES
-import {Types} from "mongoose"
-
-// A TYPE FOR THE NOTE MODEL
-export type Note = {
-    userID: Types.ObjectId,
-    title: string
-    description?: string
-}
+import {Note} from "@/types/Types"
 
 // CREATING A NOTE SCHEMA FROM THE INSTANCE OF TYPE NOTE
 const NoteSchema = new mongoose.Schema<Note>({

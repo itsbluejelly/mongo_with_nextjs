@@ -1,9 +1,8 @@
-// IMPORTING NECESSARY MODULES
+// IMPORTING NECESSARY FILES
+    // IMPORTING MODULES
 import jwt from "jsonwebtoken"
-import { Types } from "mongoose"
-
-// DEFINING A TYPE FOR THE USERID
-export type UserID = { _id: Types.ObjectId }
+    // IMPORTING TYPES
+import {UserID} from "@/types/Types"
 
 // A FUNCTION TO SIGN A JWT
 export function jwtSign(userID: UserID): string{
