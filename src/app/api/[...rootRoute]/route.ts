@@ -7,7 +7,13 @@ import eventLogger from "@/libs/eventLogger";
 // AN ENDPOINT FOR THE ROOTROUTE
 function handler(request: NextRequest){
     eventLogger(request.nextUrl.pathname, request.method, "eventLogs.txt")
-    return NextResponse.json({})
+    return NextResponse.json({ error: "Sorry, wrong path" }, { status: 404 })
 }
 
-export {handler as GET, handler as POST, handler as PUT, handler as DELETE}
+export {
+    handler as GET, 
+    handler as POST, 
+    handler as PUT, 
+    handler as DELETE,
+    handler as PATCH
+}

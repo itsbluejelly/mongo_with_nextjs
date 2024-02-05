@@ -23,7 +23,7 @@ export async function GET(request: NextRequest){
         // FETCHING THE NOTES OF THE USER FROM THE DATABASE
         const foundNotes = await NoteSchema
             .find({userID})
-            .select("title description createdAt updatedAt")
+            .select("title description createdAt updatedAt _id")
             
             .sort({
                 updatedAt: "desc",

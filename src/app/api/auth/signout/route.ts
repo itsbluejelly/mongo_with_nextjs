@@ -10,6 +10,7 @@ import connectDB from "@/libs/connectDB"
 import userVerifier from "@/libs/userVerifier"
     // IMPORTING MODELS
 import UserSchema from "@/models/User"
+import NoteSchema from "@/models/Note"
     // IMPORTING TYPES
 import { ProperRequest } from "@/libs/userVerifier"
 
@@ -54,6 +55,7 @@ export async function DELETE(request: NextRequest){
         }
 
         // IF USER EXISTS, THEN DELETE THE USER FROM THE DATABASE
+        await NoteSchema.deleteMany({ userID })
         await UserSchema.findByIdAndDelete(userID)
         eventLogger("200: Success", `User of id ${foundUser._id} successfully deleted` , "databaseLogs.txt")
         
