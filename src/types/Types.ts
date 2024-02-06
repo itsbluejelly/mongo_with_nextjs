@@ -3,7 +3,13 @@
 import { Types } from "mongoose"
 import { NextRequest } from "next/server"
     // IMPORTING GENERICS
-import {Prettier, Omitter, OptionalGenerator, ActionTypeGenerator} from "@/types/Generics"
+import {
+    Prettier, 
+    Omitter, 
+    OptionalGenerator, 
+    ObjectTypeGenerator,
+    Commonify
+} from "@/types/Generics"
     // IMPORTING ENUMS
 import { USER_CONTEXT_REDUCER_ACTION_TYPE } from "./Enums"
 
@@ -29,19 +35,36 @@ export type User = {
 }
 
 // A TYPE FOR THE USER IN THE CONTEXT
-export type UserType = Prettier<Omitter<User, "password"> & { userID: string }>
+export type UserType = Omitter<User, "password">
 
 // A TYPE FOR THE USERCONTEXTREDUCER STATE
 export type UserContextReducerStateType = { 
     user: UserType | null,
-    error: string 
+    error: string,
+    loading: boolean,
+    success: string 
 }
 
 // A TYPE FOR THE USERCONTEXTREDUCER ACTION
-export type UserContextReducerActionType = ActionTypeGenerator<{
-    [USER_CONTEXT_REDUCER_ACTION_TYPE.DELETE_USER]: never,
-    [USER_CONTEXT_REDUCER_ACTION_TYPE.SET_USER]: Omitter<User, "password">
+export type UserContextReducerActionType = ObjectTypeGenerator<{
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.DELETE_USER]: User,
+
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.SET_USER]: {
+        user: User, 
+        route: "login" | "signup"
+    },
+
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.GET_USER]: void,
 }>
 
-// A TYPE FOR THE USERCONTEXT
-export type UserContextType = Prettier<UserContextReducerStateType & { dispatch: React.Dispatch<UserContextReducerActionType> }>
+// A TYPE FOR THE AUTH RESPONSE
+export type AuthResponse = Commonify<OptionalGenerator<
+    Omitter<UserContextReducerStateType, "loading"> & UserType
+>, unknown>
+
+// A TYPE FOR THE AUTH RESPONSE VALUES
+export type AuthResponseValues = ObjectTypeGenerator<{
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.DELETE_USER]: Omitter<AuthResponse, "user">,
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.SET_USER]: Omitter<AuthResponse, "user">,
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.GET_USER]: AuthResponse,
+}>

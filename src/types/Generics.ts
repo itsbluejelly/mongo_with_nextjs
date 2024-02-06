@@ -13,7 +13,15 @@ export type Omitter<ObjectType extends object, KeyType extends keyof ObjectType>
     [key in keyof ObjectType as key extends KeyType ? never : key]: ObjectType[key]
 }
 
-// A GENERIC TO CREATE THE ACTION TYPE OF A CONTEXT
-export type ActionTypeGenerator<Type extends object> = {
-    [key in keyof Type]: Type[key] extends never ? { type: key } : { type: key, payload: Type[key] }
-}[keyof Type]
+// A GENERIC TO CREATE AN OBJECT
+export type ObjectTypeGenerator<Type extends object> = {
+    [key in keyof Type]: Type[key] extends never ? never : Type[key]
+}
+
+// A GENERIC TO MAP AN OBJECT'S KEYS TO A SPECIFIC TYPE
+export type Commonify<Type extends object, CommonType> = {
+    [key in keyof Type]: CommonType
+}
+
+// A GENERIC THAT FINDS THE TYPE OF THE RETURNED VALUE
+export type FindReturn<Type extends (...args: any) => any> = Type extends (...args: any) => infer P ? P : unknown
