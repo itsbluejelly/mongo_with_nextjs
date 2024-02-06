@@ -25,9 +25,7 @@ export function GET(request: NextRequest){
             return NextResponse.json({ error:  "No email cookie detected in the request header" }, { status: STATUS_CODES.BAD_REQUEST })
         }
 
-        // IF EMAIL IS FOUND, PASS IT ALONG AS AN OBJECT AND DESTROY THE EMAIL COOKIE
-        cookies().delete("email")
-
+        // IF EMAIL IS FOUND, PASS IT ALONG AS AN OBJECT
         return NextResponse.json({
             success: "Credentials obtained successfully",
             data: {email}

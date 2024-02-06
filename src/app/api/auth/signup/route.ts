@@ -53,13 +53,13 @@ export async function POST(request: NextRequest){
         cookies().set("userID", userID, {
             httpOnly: true,
             secure: true,
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 24 * 60 * 60
         })
 
         cookies().set("email", newEmail, {
             httpOnly: true,
             secure: true,
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 24 * 60 * 60
         })
         
         eventLogger(`${STATUS_CODES.CREATED}: Created`, `User of id ${userID} successfully created` , "databaseLogs.txt")
