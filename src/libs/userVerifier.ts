@@ -9,7 +9,6 @@ import { UserID } from "@/types/Types"
 import {ProperRequest} from "@/types/Types"
     // IMPORTING MODULES
 import {isValidObjectId} from "mongoose"
-import {cookies} from "next/headers"
     // IMPORTING ENUMS
 import {STATUS_CODES} from "@/types/Enums"
 

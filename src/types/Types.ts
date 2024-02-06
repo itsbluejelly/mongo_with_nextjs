@@ -24,7 +24,7 @@ export type UpdateObject = Omitter<OptionalGenerator<Note>, "userID">
 
 // A TYPE FOR THE USER MODEL
 export type User = {
-    email: string
+    email: string,
     password: string
 }
 
@@ -32,16 +32,16 @@ export type User = {
 export type UserType = Prettier<Omitter<User, "password"> & { userID: string }>
 
 // A TYPE FOR THE USERCONTEXTREDUCER STATE
-export type UserContextReducerStateType = {
+export type UserContextReducerStateType = { 
     user: UserType | null,
-    error: string
+    error: string 
 }
 
 // A TYPE FOR THE USERCONTEXTREDUCER ACTION
 export type UserContextReducerActionType = ActionTypeGenerator<{
     [USER_CONTEXT_REDUCER_ACTION_TYPE.DELETE_USER]: never,
-    [USER_CONTEXT_REDUCER_ACTION_TYPE.SET_USER]: UserType
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.SET_USER]: Omitter<User, "password">
 }>
 
 // A TYPE FOR THE USERCONTEXT
-export type UserContextType = UserContextReducerStateType
+export type UserContextType = Prettier<UserContextReducerStateType & { dispatch: React.Dispatch<UserContextReducerActionType> }>

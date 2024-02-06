@@ -4,6 +4,7 @@ import * as bcrypt from "bcryptjs"
 import {isEmail} from "validator"
     // IMPORTING SERVER ITEMS
 import {NextRequest, NextResponse} from "next/server"
+import {cookies} from "next/headers"
     // IMPORTING MIDDLEWARE
 import eventLogger from "@/libs/eventLogger"
 import connectDB from "@/libs/connectDB"
@@ -23,8 +24,8 @@ export async function DELETE(request: NextRequest){
         const properRequest = userVerifier(request) as ProperRequest
 
         // DESTRUCTURING THE EMAIL, PASSWORD AND USERID FROM THE REQUEST
-        const {email, password} = await request.json()
         const {_id:userID} = properRequest.storedUser
+        const {email, password} = await properRequest.json()
 
         if(!email){
             eventLogger(`${STATUS_CODES.BAD_REQUEST}: Bad Request`, "Missing email property" , "errorLogs.txt")
@@ -56,9 +57,11 @@ export async function DELETE(request: NextRequest){
             return NextResponse.json({ error: "Invalid email, doesn't match with the one in the database" }, { status: STATUS_CODES.BAD_REQUEST })
         }
 
-        // IF USER EXISTS, THEN DELETE THE USER FROM THE DATABASE
+        // IF USER EXISTS, THEN DELETE THE USER AND THEIR NOTES FROM THE DATABASE, AND INVALIDATE THEIR COOKIES
         await NoteSchema.deleteMany({ userID })
         await UserSchema.findByIdAndDelete(userID)
+        cookies().delete("userID")
+        cookies().delete("email")
         eventLogger(`${STATUS_CODES.SUCCESS}: Success`, `User of id ${foundUser._id} successfully deleted` , "databaseLogs.txt")
         
         // RETURNING SUCCESS RESPONSE

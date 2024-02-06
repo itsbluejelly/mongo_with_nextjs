@@ -47,7 +47,7 @@ export async function POST(request: NextRequest){
             return NextResponse.json({ error: "Invalid password, doesn't match with the one in the database" }, { status: STATUS_CODES.BAD_REQUEST })
         }
 
-        // IF USER EXISTS, THEN RETURN THE USER AFTER ASSIGNING JWT
+        // IF USER EXISTS, THEN CREATE COOKIES CONTAINING THE USERID AND EMAIL
         const userID: string = jwtSign({ _id: foundUser._id })
         
         cookies().set("userID", userID, {
@@ -56,14 +56,16 @@ export async function POST(request: NextRequest){
             maxAge: 24 * 60 * 60 * 1000
         })
 
-        const loggedUser = { email: foundUser.email }
+        cookies().set("email", foundUser.email, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 24 * 60 * 60 * 1000
+        })
+
         eventLogger(`${STATUS_CODES.SUCCESS}: Success`, `User of id ${userID} successfully logged in` , "databaseLogs.txt")
         
-        // RETURNING USER WITH USERID TOKEN
-        return NextResponse.json({
-            success: "Logged in successfully",
-            data: loggedUser
-        }, { status: STATUS_CODES.SUCCESS })
+        // RETURNING SUCCESS RESPONSE
+        return NextResponse.json({ success: "Logged in successfully" }, { status: STATUS_CODES.SUCCESS })
     }catch(error: unknown){
         eventLogger((error as Error).name, (error as Error).message, "errorLogs.txt")
         return NextResponse.json({ error: (error as Error).message }, { status: STATUS_CODES.INTERNAL_SERVER_ERROR })

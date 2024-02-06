@@ -44,7 +44,7 @@ export async function POST(request: NextRequest){
             return NextResponse.json({ error: `User of email ${email} already exists` }, { status: STATUS_CODES.BAD_REQUEST })
         }
 
-        // IF USER DOESNT EXIST, THEN CREATE A NEW USER AFTER ENCRYPTING PASSWORD AND ASSIGNING JWT
+        // IF USER DOESNT EXIST, THEN CREATE A NEW USER AFTER ENCRYPTING PASSWORD AND CREATE COOKIES CONTAINING USERID AND EMAIL
         const hashSalt = await bcrypt.genSalt(12)
         const hashedPassword: string = await bcrypt.hash(password, hashSalt)
         const {email: newEmail, _id} = await UserSchema.create({email, password: hashedPassword})
@@ -55,15 +55,17 @@ export async function POST(request: NextRequest){
             secure: true,
             maxAge: 24 * 60 * 60 * 1000
         })
+
+        cookies().set("email", newEmail, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 24 * 60 * 60 * 1000
+        })
         
-        const newUser = { email: newEmail }
         eventLogger(`${STATUS_CODES.CREATED}: Created`, `User of id ${userID} successfully created` , "databaseLogs.txt")
         
         // RETURNING USER WITH USERID TOKEN
-        return NextResponse.json({
-            success: "Signed in successfully",
-            data: newUser
-        }, { status: STATUS_CODES.CREATED })
+        return NextResponse.json({ success: "Signed in successfully" }, { status: STATUS_CODES.CREATED })
     }catch(error: unknown){
         eventLogger((error as Error).name, (error as Error).message, "errorLogs.txt")
         return NextResponse.json({ error: (error as Error).message }, { status: STATUS_CODES.INTERNAL_SERVER_ERROR })
