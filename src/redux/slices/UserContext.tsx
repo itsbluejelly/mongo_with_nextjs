@@ -180,6 +180,6 @@ const userContextSlice = createSlice({
     }
 })
 
-// EXPORT THE ACTIONS AND REDUCER FROM THE SLICE
+// EXPORT THE REDUCER FROM THE SLICE
 const UserContextReducer = userContextSlice.reducer
 export default UserContextReducer

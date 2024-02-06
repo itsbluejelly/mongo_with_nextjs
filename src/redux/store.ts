@@ -3,13 +3,15 @@
 import { configureStore } from "@reduxjs/toolkit";
     // IMPORTING REDUCERS
 import UserContextReducer from "./slices/UserContext";
+import NotesContextReducer from "./slices/NotesContext";
     // IMPORTING GENERICS
 import { FindReturn } from "@/types/Generics";
 
 // CREATING A STORE
 const store = configureStore({
     reducer: {
-        "UserContext": UserContextReducer
+        "UserContext": UserContextReducer,
+        "NotesContext": NotesContextReducer,
     }
 })
 

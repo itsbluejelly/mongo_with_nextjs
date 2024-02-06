@@ -5,13 +5,13 @@ import { NextRequest } from "next/server"
     // IMPORTING GENERICS
 import {
     Prettier, 
-    Omitter, 
+    Omitter,
     OptionalGenerator, 
     ObjectTypeGenerator,
     Commonify
 } from "@/types/Generics"
     // IMPORTING ENUMS
-import { USER_CONTEXT_REDUCER_ACTION_TYPE } from "./Enums"
+import { USER_CONTEXT_REDUCER_ACTION_TYPE, NOTES_CONTEXT_REDUCER_ACTION_TYPE } from "./Enums"
 
 // DEFINING A TYPE FOR THE USERID
 export type UserID = { _id: Types.ObjectId }
@@ -59,7 +59,7 @@ export type UserContextReducerActionType = ObjectTypeGenerator<{
 
 // A TYPE FOR THE AUTH RESPONSE
 export type AuthResponse = Commonify<OptionalGenerator<
-    Omitter<UserContextReducerStateType, "loading"> & UserType
+    Omitter<UserContextReducerStateType, "loading" | "user"> & {user: string}
 >, unknown>
 
 // A TYPE FOR THE AUTH RESPONSE VALUES
@@ -67,4 +67,21 @@ export type AuthResponseValues = ObjectTypeGenerator<{
     [USER_CONTEXT_REDUCER_ACTION_TYPE.DELETE_USER]: Omitter<AuthResponse, "user">,
     [USER_CONTEXT_REDUCER_ACTION_TYPE.SET_USER]: Omitter<AuthResponse, "user">,
     [USER_CONTEXT_REDUCER_ACTION_TYPE.GET_USER]: AuthResponse,
+}>
+
+// A TYPE FOR THE NOTE IN THE CONTEXT
+export type NoteType = Prettier<Omitter<Note, "userID"> & { _id: Types.ObjectId }>
+
+// A TYPE FOR THE NOTESCONTEXTREDUCER STATE
+export type NotesContextReducerStateType = { 
+    notes: NoteType[],
+    error: string,
+}
+
+// A TYPE FOR THE NOTESCONTEXTREDUCER ACTION
+export type NotesContextReducerActionType = ObjectTypeGenerator<{
+    [NOTES_CONTEXT_REDUCER_ACTION_TYPE.ADD_NOTE]: { type: string, payload: NoteType},
+    [NOTES_CONTEXT_REDUCER_ACTION_TYPE.DELETE_NOTE]: { type: string, payload: NoteType},
+    [NOTES_CONTEXT_REDUCER_ACTION_TYPE.EDIT_NOTE]: { type: string, payload: NoteType},
+    [NOTES_CONTEXT_REDUCER_ACTION_TYPE.SET_NOTES] : {type: string, payload: NoteType[]}
 }>

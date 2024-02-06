@@ -13,6 +13,11 @@ export type Omitter<ObjectType extends object, KeyType extends keyof ObjectType>
     [key in keyof ObjectType as key extends KeyType ? never : key]: ObjectType[key]
 }
 
+// A GENERIC TYPE TO FILTER CERTAIN PROPERTIES IN AN OBJECT
+export type Filterer<ObjectType extends object, KeyType extends keyof ObjectType> = {
+    [key in keyof ObjectType as key extends KeyType ? key : never]: ObjectType[key]
+}
+
 // A GENERIC TO CREATE AN OBJECT
 export type ObjectTypeGenerator<Type extends object> = {
     [key in keyof Type]: Type[key] extends never ? never : Type[key]
