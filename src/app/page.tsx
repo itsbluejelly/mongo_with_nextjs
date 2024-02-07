@@ -1,10 +1,11 @@
 "use client"
 
 // IMPORTING NECESSARY FILES
-    // IMPORTING HOOKS
-import useRootVerifier from "@/hooks/useRootVerifier"
+    // IMPORTING MODULES
+import {useRouter} from "next/navigation"
 
-// A PAGE FOR THE /AUTH/LOGIN ROUTE
+// A PAGE FOR THE / ROUTE
 export default function Page(){
-    useRootVerifier()
+    const router = useRouter()
+    router.push('/')
 }

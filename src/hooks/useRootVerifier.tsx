@@ -27,10 +27,6 @@ export default function useRootVerifier(): void{
     React.useEffect(() => {userDispatch(getUser())}, [userDispatch])
 
     // PERFORMING NECESSARY REROUTING ON CLIENT SIDE
-    if(router.pathname.startsWith('/')){
-        router.push('/home')
-    }
-
     if(!user && router.pathname.startsWith('/home')){
         router.push('/auth/login')
     }else if (user && router.pathname.startsWith("/auth")) {

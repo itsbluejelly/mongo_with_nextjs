@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import ContextProvider from "@/components/ContextProvider"
+import Navbar from "@/components/Navbar"
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,8 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <ContextProvider>{children}</ContextProvider>
+      <body className={`${inter.className} max-w-3xl mx-auto p-4`}>
+        <ContextProvider>
+          <Navbar />
+          <main>{children}</main>
+        </ContextProvider>
       </body>
     </html>
   );
