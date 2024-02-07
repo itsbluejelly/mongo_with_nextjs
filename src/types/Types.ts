@@ -85,3 +85,6 @@ export type NotesContextReducerActionType = ObjectTypeGenerator<{
     [NOTES_CONTEXT_REDUCER_ACTION_TYPE.EDIT_NOTE]: { type: string, payload: NoteType},
     [NOTES_CONTEXT_REDUCER_ACTION_TYPE.SET_NOTES] : {type: string, payload: NoteType[]}
 }>
+
+// A TYPE FOR THE NOTES FETCH
+export type NotesFetch = Omitter<UserContextReducerStateType, "user">
