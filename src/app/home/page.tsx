@@ -114,19 +114,18 @@ export default function HomePage() {
   }, [dispatch]);
 
   // A FUNCTION TO MAP THROUGH THE OBTAINED NOTES
-  const notesArray: JSX.Element[] = React.useMemo(
-    () =>
-      notes.map((note) => (
-        <Note
-          key={`${note._id}`}
-          title={note.title}
-          description={note.description}
-          _id={note._id}
-          deleteAction={deleteHandler}
-        />
-      )),
-    [notes, deleteHandler]
-  );
+  function notesArrayGenerator(): JSX.Element[]{
+    return notes.map((note) => (
+      <Note
+        key={`${note._id}`}
+        title={note.title}
+        description={note.description}
+        _id={note._id}
+        deleteAction={deleteHandler}
+        loading={notesFetch.loading || userLoading}
+      />
+    ));
+  }
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
@@ -150,8 +149,8 @@ export default function HomePage() {
         <p>Loading...</p>
           :
         <>
-          <section>{notesArray}</section>
-          {notesFetch.success || userSuccess && <p>{notesFetch.success ?? userSuccess}</p>}
+          <section>{notesArrayGenerator()}</section>
+          {(notesFetch.success || userSuccess) && <p>{notesFetch.success ?? userSuccess}</p>}
         </>
   )
 }

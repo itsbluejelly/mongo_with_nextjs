@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={`${inter.className} max-w-3xl mx-auto p-4`}>
         <ContextProvider>
           <Navbar />
-          <main>{children}</main>
+          <main className="mt-8">{children}</main>
         </ContextProvider>
       </body>
     </html>

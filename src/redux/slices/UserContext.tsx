@@ -36,7 +36,7 @@ export const deleteUser = createAsyncThunk<AuthResponseValues["DELETE_USER"], Us
     }
 )
 
-    // FUNCTION TO SET USER
+    // FUNCTION TO GET USER
 export const getUser = createAsyncThunk<AuthResponseValues["GET_USER"], UserContextReducerActionType["GET_USER"]>(
     "userContextReducer/getUser",
 
@@ -53,7 +53,7 @@ export const getUser = createAsyncThunk<AuthResponseValues["GET_USER"], UserCont
 )
 
     // FUNCTION TO SET USER
-const setUser = createAsyncThunk<AuthResponseValues["SET_USER"], UserContextReducerActionType["SET_USER"]>(
+export const setUser = createAsyncThunk<AuthResponseValues["SET_USER"], UserContextReducerActionType["SET_USER"]>(
     "userContextReducer/setUser",
 
     async({user, route}: {user: User, route: "signup" | "login"}) => {
