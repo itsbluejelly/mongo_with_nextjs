@@ -1,5 +1,5 @@
 // IMPORTING NECESSARY TYPES
 import {ReactNode} from "react"
 
-// DEFINING PROPS FOR THE USERCONTEXT PROVIDER
-export type UserContextProviderProps = { children: ReactNode }
+// DEFINING PROPS FOR THE CONTEXT PROVIDER
+export type ContextProviderProps = { children: ReactNode }

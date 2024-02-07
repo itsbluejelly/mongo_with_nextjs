@@ -2,7 +2,7 @@
 
 // IMPORTING NECESSARY FILES
     // IMPORTING MODULES
-import { UseSelector, UseDispatch, useSelector, useDispatch} from "react-redux";
+import { useSelector, useDispatch} from "react-redux";
 import React from "react"
 import { useRouter } from "next/router";
     // IMPORTING TYPES
@@ -27,6 +27,10 @@ export default function useRootVerifier(): void{
     React.useEffect(() => {userDispatch(getUser())}, [userDispatch])
 
     // PERFORMING NECESSARY REROUTING ON CLIENT SIDE
+    if(router.pathname.startsWith('/')){
+        router.push('/home')
+    }
+
     if(!user && router.pathname.startsWith('/home')){
         router.push('/auth/login')
     }else if (user && router.pathname.startsWith("/auth")) {

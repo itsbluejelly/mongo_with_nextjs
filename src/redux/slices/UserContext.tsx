@@ -20,7 +20,7 @@ export const deleteUser = createAsyncThunk<AuthResponseValues["DELETE_USER"], Us
     "userContextReducer/deleteUser",
     
     async (user: User) => {
-        const response: Response = await fetch(`${process.env.API_URL}/api/auth/signout`, {
+        const response: Response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signout`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(user)
@@ -41,7 +41,7 @@ export const getUser = createAsyncThunk<AuthResponseValues["GET_USER"], UserCont
     "userContextReducer/getUser",
 
     async() => {
-        const response: Response = await fetch(`${process.env.API_URL}/api/auth/verify`)
+        const response: Response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify`)
         const {success, error, data: user} = await response.json()
 
         if(!response.ok){
@@ -58,7 +58,7 @@ const setUser = createAsyncThunk<AuthResponseValues["SET_USER"], UserContextRedu
 
     async({user, route}: {user: User, route: "signup" | "login"}) => {
       const response: Response = await fetch(
-        `${process.env.API_URL}/api/auth/${route}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/${route}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
