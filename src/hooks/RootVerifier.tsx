@@ -2,7 +2,7 @@
 
 // IMPORTING NECESSARY FILES
     // IMPORTING MODULES
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
     // IMPORTING TYPES
 import {UserType} from "@/types/Types"
 
