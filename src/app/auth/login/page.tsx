@@ -70,7 +70,13 @@ export default function LoginPage(){
         <Link href={'/auth/signup'} className="text-blue-600 underline hover:text-red-500">sign up</Link>
       </span>
 
-      {(error || success) && <p>{error ?? success}</p>}
+      {
+        loading
+          ?
+        <p>Loading...</p>
+          :
+        (error || success) && <p>{error ?? success}</p>
+      }
     </section>
   )
 }

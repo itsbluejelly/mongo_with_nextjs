@@ -156,12 +156,13 @@ export default function EditTopicPage(){
         </Link>
       </span>
 
-      {(noteFetch.loading || userLoading) && <p>Loading...</p>}
-      {(noteFetch.error || userError || notesError) && (
+      {noteFetch.loading || userLoading ? (
+        <p>Loading...</p>
+      ) : noteFetch.error || userError || notesError ? (
         <p>{noteFetch.error ?? userError ?? notesError}</p>
-      )}
-      {(noteFetch.success || userSuccess) && (
-        <p>{noteFetch.success ?? userSuccess}</p>
+      ) : (
+        noteFetch.success ||
+        (userSuccess && <p>{noteFetch.success ?? userSuccess}</p>)
       )}
     </section>
   );

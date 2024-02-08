@@ -75,7 +75,11 @@ export default function SignoutPage() {
         </Link>
       </span>
 
-      {(error || success) && <p>{error ?? success}</p>}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        (error || success) && <p>{error ?? success}</p>
+      )}
     </section>
   );
 }
