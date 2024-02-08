@@ -41,7 +41,7 @@ export default function SignoutPage() {
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {userDispatch(getUser())}, [userDispatch]);
 
-  return user ? (
+  return (
     <section>
       <h1 className="text-bold text-2xl">Goodbye, sign out</h1>
 
@@ -81,22 +81,5 @@ export default function SignoutPage() {
         (error || success) && <p>{error ?? success}</p>
       )}
     </section>
-  ) : (
-    <p>
-      You are already signed out, click
-      <Link
-        href={"/auth/login"}
-        className="text-blue-600 underline hover:text-red-500"
-      >
-        log in
-      </Link>
-      or
-      <Link
-        href={"/auth/signup"}
-        className="text-blue-600 underline hover:text-red-500"
-      >
-        sign up
-      </Link>
-    </p>
-  );
+  )
 }
