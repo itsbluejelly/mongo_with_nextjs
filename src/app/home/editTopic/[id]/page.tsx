@@ -4,7 +4,7 @@
 // IMPORTING MODULES
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {useRouter, useSearchParams} from "next/navigation"
+import {useRouter, useParams} from "next/navigation"
 // IMPORTING ACTIONS
 import { getUser } from "@/redux/slices/UserContext";
 import { editNote } from "@/redux/slices/NotesContext";
@@ -18,8 +18,9 @@ import Link from "next/link";
 // A PAGE FOR THE /HOME/EDITTOPIC/[ID] ROUTE
 export default function EditTopicPage(){
   // GETTING THE ID PARAMETER AND ROUTER
-  const queryParams = useSearchParams();
-  const _id = queryParams.get("id");
+  const queryParams = useParams();
+  const _id = queryParams.id
+  console.log(_id)
   const router = useRouter()
 
   // DEFINING STATES
