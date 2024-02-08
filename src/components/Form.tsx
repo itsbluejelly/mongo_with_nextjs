@@ -36,11 +36,12 @@ export default function Form({
       />
 
       <input
-        type="text"
+        type={secondName === "password" ? "password" : "text"}
         name={secondName}
         placeholder={secondPlaceholder}
         onChange={(e: ChangeEvent<HTMLInputElement>) => secondOnChange(e)}
         value={secondValue}
+        className="border border-slate-500 px-8 py-2"
       />
 
       <button 

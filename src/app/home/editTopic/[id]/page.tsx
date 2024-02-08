@@ -84,7 +84,7 @@ export default function EditTopicPage(){
 
       try {
         const response: Response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/notes/note`,
+          `${process.env.NEXT_PUBLIC_API_URL}/notes/note`,
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },

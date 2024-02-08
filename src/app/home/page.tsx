@@ -52,7 +52,7 @@ export default function HomePage() {
 
     try {
       const response: Response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/notes`
+        `${process.env.NEXT_PUBLIC_API_URL}/notes`
       );
       const { success, data, error } = await response.json();
 
@@ -85,7 +85,7 @@ export default function HomePage() {
     });
 
     try {
-      const response: Response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/notes/note`, {
+      const response: Response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notes/note`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ _id: noteID })

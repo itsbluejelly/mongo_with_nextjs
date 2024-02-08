@@ -19,20 +19,27 @@ const initialState: UserContextReducerStateType = {
 export const deleteUser = createAsyncThunk<AuthResponseValues["DELETE_USER"], UserContextReducerActionType["DELETE_USER"]>(
     "userContextReducer/deleteUser",
     
-    async (user: User) => {
-        const response: Response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signout`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(user)
-        })
+    async (user, thunkAPI) => {
+        try{
+            const response: Response = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/auth/signout`,
+              {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user),
+              }
+            );
 
-        const {success, error} = await response.json()
-        
-        if(!response.ok){
-            return error
+            const { success, error } = await response.json();
+
+            if (error) {
+              throw new Error(error)
+            }
+
+            return success;
+        }catch(error: unknown){
+            return thunkAPI.rejectWithValue((error as Error).message)
         }
-
-        return success
     }
 )
 
@@ -40,15 +47,21 @@ export const deleteUser = createAsyncThunk<AuthResponseValues["DELETE_USER"], Us
 export const getUser = createAsyncThunk<AuthResponseValues["GET_USER"], UserContextReducerActionType["GET_USER"]>(
     "userContextReducer/getUser",
 
-    async() => {
-        const response: Response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify`)
-        const {success, error, data: user} = await response.json()
+    async(voidParams, thunkAPI) => {
+        try{
+            const response: Response = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/auth/verify`
+            );
+            const { success, error, data: user } = await response.json();
 
-        if(!response.ok){
-            return error
+            if (error) {
+              throw new Error(error)
+            }
+
+            return { success, user };
+        }catch(error: unknown){
+            return thunkAPI.rejectWithValue((error as Error).message);
         }
-
-        return {success, user}
     }
 )
 
@@ -56,23 +69,27 @@ export const getUser = createAsyncThunk<AuthResponseValues["GET_USER"], UserCont
 export const setUser = createAsyncThunk<AuthResponseValues["SET_USER"], UserContextReducerActionType["SET_USER"]>(
     "userContextReducer/setUser",
 
-    async({user, route}: {user: User, route: "signup" | "login"}) => {
-      const response: Response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/${route}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(user),
+    async({user, route}, thunkAPI) => {
+        try{
+            const response: Response = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL}/auth/${route}`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user),
+              }
+            );
+
+            const { success, error } = await response.json();
+
+            if (error) {
+              throw new Error(error);
+            }
+
+            return success;
+        }catch(error: unknown){
+            return thunkAPI.rejectWithValue((error as Error).message)
         }
-      );
-
-      const { success, error } = await response.json();
-      
-      if (!response.ok) {
-        return error;
-      }
-
-      return success;
     }
 )
 
@@ -84,99 +101,99 @@ const userContextSlice = createSlice({
     
     extraReducers: builder => {
         builder
-            .addCase(
-                deleteUser.pending, 
-                (state: UserContextReducerStateType) => ({...state, loading: true, error: '', success: '', user: null})
-            )
-            
-            .addCase(
-                deleteUser.fulfilled, 
-                
-                (state: UserContextReducerStateType, {payload: {error, success}}) => {
-                    if(error){
-                        return {
-                          ...state,
-                          loading: false,
-                          error: error as string,
-                          success: "",
-                          user: null
-                        };
-                    }
+          .addCase(
+            deleteUser.pending,
+            (state: UserContextReducerStateType) => ({
+              ...state,
+              loading: true,
+              error: "",
+              success: "",
+              user: null,
+            })
+          )
 
+          .addCase(
+            deleteUser.rejected,
+
+            (state: UserContextReducerStateType, { payload }) => ({
+              ...state,
+              loading: false,
+              error: payload as string,
+              success: "",
+              user: null,
+            })
+          )
+
+          .addCase(
+            deleteUser.fulfilled,
+
+            (state: UserContextReducerStateType, { payload: { success } }) => {
+              return {
+                ...state,
+                loading: false,
+                error: "",
+                success: success as string,
+                user: null,
+              };
+            }
+          )
+
+          .addCase(setUser.pending, (state: UserContextReducerStateType) => ({
+            ...state,
+            loading: true,
+            error: "",
+            success: "",
+            user: null,
+          }))
+
+          .addCase(setUser.rejected, (state: UserContextReducerStateType, { payload }) => ({
+              ...state,
+              loading: false,
+              error: payload as string,
+              success: "",
+              user: null,
+            })
+          )
+
+          .addCase(setUser.fulfilled, (state: UserContextReducerStateType, { payload: {success} }) => {
+              return {
+                ...state,
+                loading: false,
+                error: "",
+                success: success as string,
+                user: null,
+              };
+            }
+          )
+          
+          .addCase(getUser.pending, (state: UserContextReducerStateType) => ({
+                ...state,
+                loading: true,
+                error: "",
+                success: "",
+                user: null,
+          }))
+
+          .addCase(getUser.fulfilled, (state: UserContextReducerStateType, { payload: { user, success}}) => {
+                if (!objIsUser(user)) {
                     return {
-                      ...state,
-                      loading: false,
-                      error: "",
-                      success: success as string,
-                      user: null
+                        ...state,
+                        loading: false,
+                        error: "The user data is not of the required type",
+                        success: "",
+                        user: null,
                     };
                 }
-            )
-            
-            .addCase(
-                setUser.pending, 
-                (state: UserContextReducerStateType) => ({...state, loading: true, error: '', success: '', user: null})
-            )
-            
-            .addCase(
-                setUser.fulfilled, 
-                
-                (state: UserContextReducerStateType, {payload: {error, success}}) => {
-                    if(error){
-                        return {
-                          ...state,
-                          loading: false,
-                          error: error as string,
-                          success: "",
-                          user: null
-                        };
-                    }
 
-                    return {
-                      ...state,
-                      loading: false,
-                      error: "",
-                      success: success as string,
-                      user: null
-                    };
-                }
-            )
-            .addCase(
-                getUser.pending, 
-                (state: UserContextReducerStateType) => ({...state, loading: true, error: '', success: '', user: null})
-            )
-            
-            .addCase(
-                getUser.fulfilled, 
-                
-                (state: UserContextReducerStateType, {payload: {user, error, success}}) => {
-                    if(error){
-                        return {
-                          ...state,
-                          loading: false,
-                          error: error as string,
-                          success: "",
-                          user: null
-                        };
-                    }else if(!objIsUser(user)){
-                        return {
-                          ...state,
-                          loading: false,
-                          error: "The user data is not of the required type",
-                          success: "",
-                          user: null,
-                        };
-                    }
-
-                    return {
-                      ...state,
-                      loading: false,
-                      error: "",
-                      success: success as string,
-                      user: user,
-                    };
-                }
-            )
+                return {
+                    ...state,
+                    loading: false,
+                    error: "",
+                    success: success as string,
+                    user: user,
+                };
+            }
+          );
     }
 })
 

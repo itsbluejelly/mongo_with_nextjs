@@ -64,9 +64,9 @@ export type AuthResponse = Commonify<OptionalGenerator<
 
 // A TYPE FOR THE AUTH RESPONSE VALUES
 export type AuthResponseValues = ObjectTypeGenerator<{
-    [USER_CONTEXT_REDUCER_ACTION_TYPE.DELETE_USER]: Omitter<AuthResponse, "user">,
-    [USER_CONTEXT_REDUCER_ACTION_TYPE.SET_USER]: Omitter<AuthResponse, "user">,
-    [USER_CONTEXT_REDUCER_ACTION_TYPE.GET_USER]: AuthResponse,
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.DELETE_USER]: Omitter<AuthResponse, "user" | "error">,
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.SET_USER]: Omitter<AuthResponse, "user" | "error">,
+    [USER_CONTEXT_REDUCER_ACTION_TYPE.GET_USER]: Omitter<AuthResponse, "error">,
 }>
 
 // A TYPE FOR THE NOTE IN THE CONTEXT
