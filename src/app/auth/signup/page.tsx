@@ -6,6 +6,7 @@ import RootVerifier from "@/hooks/RootVerifier";
   // IMPORTING MODULES
 import React from "react"
 import { useSelector, useDispatch } from "react-redux";
+import {useRouter} from "next/navigation"
   // IMPORTING ACTIONS
 import { getUser, setUser } from "@/redux/slices/UserContext";
   // IMPORTING TYPES
@@ -17,6 +18,9 @@ import Link from "next/link"
 
 // A PAGE FOR THE /AUTH/SIGNUP ROUTE
 export default function SignupPage() {
+  // INSTANTIATING A ROUTER
+  const router = useRouter();
+
   // DEFINING STATES
   // A STATE TO KEEP TRACK OF THE FORMDATA
   const [formData, setFormData] = React.useState<User>({
@@ -61,7 +65,12 @@ export default function SignupPage() {
           placeholder: "Enter password here",
         }}
         loading={loading}
-        submitFunction={() => userDispatch(setUser({ user: formData, route: "signup" }))}
+        
+        submitFunction={() => {
+          userDispatch(setUser({ user: formData, route: "signup" }));
+          router.refresh()
+        }}
+        
         buttonName="Sign up"
       />
 

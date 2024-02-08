@@ -6,6 +6,7 @@ import RootVerifier from "@/hooks/RootVerifier";
   // IMPORTING MODULES
 import React from "react"
 import { useSelector, useDispatch } from "react-redux";
+import {useRouter} from "next/navigation"
   // IMPORTING ACTIONS
 import { getUser, deleteUser } from "@/redux/slices/UserContext";
   // IMPORTING TYPES
@@ -17,6 +18,9 @@ import Link from "next/link"
 
 // A PAGE FOR THE /HOME/SIGNOUT ROUTE
 export default function SignoutPage() {
+  // INSTANTIATING A ROUTER
+  const router = useRouter();
+
   // DEFINING STATES
   // A STATE TO KEEP TRACK OF THE FORMDATA
   const [formData, setFormData] = React.useState<User>({
@@ -61,7 +65,12 @@ export default function SignoutPage() {
           placeholder: "Enter password here",
         }}
         loading={loading}
-        submitFunction={() => userDispatch(deleteUser(formData))}
+        
+        submitFunction={() => {
+          userDispatch(deleteUser(formData))
+          router.refresh()
+        }}
+        
         buttonName="Sign out"
       />
 
