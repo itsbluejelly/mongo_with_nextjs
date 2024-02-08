@@ -1,11 +1,10 @@
 "use client";
 
 // IMPORTING NECESSARY FILES
-  // IMPORTING HOOKS
-import RootVerifier from "@/hooks/RootVerifier";
   // IMPORTING MODULES
 import React from "react"
 import { useSelector, useDispatch } from "react-redux";
+import {useRouter} from "next/navigation"
   // IMPORTING ACTIONS
 import { getUser } from "@/redux/slices/UserContext";
 import { addNote } from "@/redux/slices/NotesContext";
@@ -18,6 +17,9 @@ import Link from "next/link";
 
 // A PAGE FOR THE /HOME/ADDTOPIC ROUTE
 export default function AddTopicPage() {
+  // INSTANTIATING A ROUTER
+  const router = useRouter()
+
   // DEFINING STATES
   // DEFINING A STATE FOR THE FORMDATA
   const [formData, setFormData] = React.useState<AddTopicFormData>({
@@ -127,8 +129,8 @@ export default function AddTopicPage() {
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     dispatch(getUser());
-    RootVerifier(user, "/home");
-  }, [dispatch, user]);
+    if (!user) router.push("/auth/login")
+  }, [dispatch, user, router]);
 
   return (
     <section>

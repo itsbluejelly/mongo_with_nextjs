@@ -1,8 +1,6 @@
 "use client";
 
 // IMPORTING NECESSARY FILES
-  // IMPORTING HOOKS
-import RootVerifier from "@/hooks/RootVerifier";
   // IMPORTING MODULES
 import React from "react"
 import { useSelector, useDispatch } from "react-redux";
@@ -43,8 +41,8 @@ export default function SignoutPage() {
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     userDispatch(getUser())
-    RootVerifier(user, "/home");
-  }, [userDispatch, user]);
+    if(!user) router.push("/auth/login")
+  }, [userDispatch, user, router]);;
 
   return (
     <section>

@@ -1,11 +1,10 @@
 "use client";
 
 // IMPORTING NECESSARY FILES
-  // IMPORTING HOOKS
-import RootVerifier from "@/hooks/RootVerifier";
   // IMPORTING MODULES
 import React from "react"
 import { useSelector, useDispatch } from "react-redux";
+import {useRouter} from "next/navigation"
   // IMPORTING ACTIONS
 import { getUser } from "@/redux/slices/UserContext";
 import { setNotes, deleteNote } from "@/redux/slices/NotesContext";
@@ -18,6 +17,9 @@ import Note from "@/components/Note"
 
 // A PAGE FOR THE /HOME ROUTE
 export default function HomePage() {
+  // INSTANTIATING A ROUTER
+  const router = useRouter()
+
   // DEFINING STATES
   // A STATE FOR THE NOTES ERROR AND LOADING STATES DURING FETCH
   const [notesFetch, setNotesFetch] = React.useState<NotesFetch>({
@@ -130,8 +132,8 @@ export default function HomePage() {
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     dispatch(getUser())
-    RootVerifier(user, "/home");
-  }, [dispatch, user]);
+    if (!user) router.push("/auth/login")
+  }, [dispatch, user, router]);
 
   // CALLING THE FETCHNOTES FUNCTION VIA USEEFFECT
   React.useEffect(() => {
