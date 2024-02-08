@@ -39,14 +39,14 @@ export default function LoginPage(){
   }
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
+  React.useEffect(() => {userDispatch(getUser())}, [userDispatch]);
   React.useEffect(() => {
-    userDispatch(getUser())
-    setFoundInitialUser(true)
-  }, [userDispatch]);
+    if (user) setFoundInitialUser(true);
+  }, [user]);
 
   React.useEffect(() => {
-    if (user && foundInitialUser) router.push("/home");
-  }, [user, router, foundInitialUser])
+    if (foundInitialUser) router.push("/home");
+  }, [router, foundInitialUser])
 
   return (
     <section>

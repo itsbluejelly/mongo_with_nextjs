@@ -123,14 +123,14 @@ export default function EditTopicPage(){
     );
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
+  React.useEffect(() => {dispatch(getUser());}, [dispatch]);
   React.useEffect(() => {
-    dispatch(getUser());
-    setFoundInitialUser(true);
-  }, [dispatch]);
+    if (user) setFoundInitialUser(true);
+  }, [user]);
 
   React.useEffect(() => {
-    if (user && foundInitialUser) router.push("/auth/login");
-  }, [user, router, foundInitialUser]);
+    if (foundInitialUser) router.push("/auth/login");
+  }, [router, foundInitialUser]);
 
   return (
     <section>
