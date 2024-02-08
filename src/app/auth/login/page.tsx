@@ -25,6 +25,8 @@ export default function LoginPage(){
     email: '',
     password: ''
   })
+    // A STATE TO FLAG THAT THE FIRST USER HAS ALREADY BEEN FETCHED
+  const [foundInitialUser, setFoundInitialUser] = React.useState<boolean>(false)
 
   // GETTING THE CONTEXT VALUES OF USER FROM THE STORE AND ITS DISPATCH FUNCTION
   const { user, error, loading, success } = useSelector((state: RootState) => state.UserContext);
@@ -38,10 +40,13 @@ export default function LoginPage(){
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
-    userDispatch(getUser());
+    userDispatch(getUser())
+    setFoundInitialUser(true)
   }, [userDispatch]);
 
-  // if (user && typeof window !== "undefined") router.push("/home");
+  React.useEffect(() => {
+    if (user && foundInitialUser) router.push("/home");
+  }, [user, router, foundInitialUser])
 
   return (
     <section>
@@ -66,7 +71,6 @@ export default function LoginPage(){
         
         submitFunction={() => {
           userDispatch(setUser({user: formData, route: "login"}))
-          router.push("/home");
         }}
         
         buttonName="Log in"       

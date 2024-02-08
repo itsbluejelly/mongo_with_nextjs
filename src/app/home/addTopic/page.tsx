@@ -18,7 +18,7 @@ import Link from "next/link";
 // A PAGE FOR THE /HOME/ADDTOPIC ROUTE
 export default function AddTopicPage() {
   // INSTANTIATING A ROUTER
-  const router = useRouter()
+  const router = useRouter();
 
   // DEFINING STATES
   // DEFINING A STATE FOR THE FORMDATA
@@ -34,6 +34,10 @@ export default function AddTopicPage() {
     success: "",
   });
 
+  // A STATE TO FLAG THAT THE FIRST USER HAS ALREADY BEEN FETCHED
+  const [foundInitialUser, setFoundInitialUser] =
+    React.useState<boolean>(false);
+
   // GETTING THE CONTEXT VALUES FROM THE STORE AND ITS DISPATCH FUNCTION
   // USER
   const {
@@ -44,7 +48,7 @@ export default function AddTopicPage() {
   } = useSelector((state: RootState) => state.UserContext);
 
   const dispatch = useDispatch<RootDispatch>();
-  
+
   // NOTES
   const { error: notesError } = useSelector(
     (state: RootState) => state.NotesContext
@@ -57,19 +61,21 @@ export default function AddTopicPage() {
   }
 
   // A FUNCTION TO CONVERT THE FORMDATA TO A NOTE OBJECT
-  function convertFormData(formData: AddTopicFormData): AddObject | AddTopicFormData | undefined{
-    const {title, description} = formData
+  function convertFormData(
+    formData: AddTopicFormData
+  ): AddObject | AddTopicFormData | undefined {
+    const { title, description } = formData;
 
-    if(!description && title){
-      return {title}
-    }else if(title && description){
-      return formData
-    }else{
+    if (!description && title) {
+      return { title };
+    } else if (title && description) {
+      return formData;
+    } else {
       setNoteFetch({
         error: "Please fill the data on the title property",
         loading: false,
-        success: ""
-      })
+        success: "",
+      });
     }
   }
 
@@ -77,14 +83,14 @@ export default function AddTopicPage() {
   const addHandler: (note: AddObject | void) => Promise<void> =
     React.useCallback(
       async (note) => {
-        if(!note || note === null){
+        if (!note || note === null) {
           return setNoteFetch({
             loading: false,
             error: "No note is provided for addition to the database",
             success: "",
           });
         }
-        
+
         setNoteFetch({
           loading: true,
           error: "",
@@ -97,7 +103,7 @@ export default function AddTopicPage() {
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({...note}),
+              body: JSON.stringify({ ...note }),
             }
           );
 
@@ -122,16 +128,19 @@ export default function AddTopicPage() {
           });
         }
       },
-      
+
       [dispatch]
     );
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     dispatch(getUser());
+    setFoundInitialUser(true);
   }, [dispatch]);
 
-  // if (!user && typeof window !== "undefined") router.push("/auth/login");
+  React.useEffect(() => {
+    if (user && foundInitialUser) router.push("/auth/login");
+  }, [user, router, foundInitialUser]);
 
   return (
     <section>
@@ -165,17 +174,14 @@ export default function AddTopicPage() {
         </Link>
       </span>
 
-      {
-        noteFetch.loading || userLoading
-          ?
-       <p>Loading...</p>
-          :
-          noteFetch.error || userError || notesError
-            ?
-          <p>{noteFetch.error ?? userError ?? notesError}</p>
-            :
-          noteFetch.success || userSuccess && <p>{noteFetch.success ?? userSuccess}</p>
-      }
+      {noteFetch.loading || userLoading ? (
+        <p>Loading...</p>
+      ) : noteFetch.error || userError || notesError ? (
+        <p>{noteFetch.error ?? userError ?? notesError}</p>
+      ) : (
+        noteFetch.success ||
+        (userSuccess && <p>{noteFetch.success ?? userSuccess}</p>)
+      )}
     </section>
   );
 }

@@ -18,10 +18,10 @@ import Link from "next/link";
 // A PAGE FOR THE /HOME/EDITTOPIC/[ID] ROUTE
 export default function EditTopicPage(){
   // GETTING THE ID PARAMETER AND ROUTER
-  const queryParams = new URLSearchParams()
-  const _id = queryParams.get('id')
+  const queryParams = new URLSearchParams();
+  const _id = queryParams.get("id");
 
-  const router = useRouter()
+  const router = useRouter();
   // DEFINING STATES
   // DEFINING A STATE FOR THE FORMDATA
   const [formData, setFormData] = React.useState<AddTopicFormData>({
@@ -35,6 +35,10 @@ export default function EditTopicPage(){
     loading: false,
     success: "",
   });
+
+  // A STATE TO FLAG THAT THE FIRST USER HAS ALREADY BEEN FETCHED
+  const [foundInitialUser, setFoundInitialUser] =
+    React.useState<boolean>(false);
 
   // GETTING THE CONTEXT VALUES FROM THE STORE AND ITS DISPATCH FUNCTION
   // USER
@@ -72,57 +76,61 @@ export default function EditTopicPage(){
   }
 
   // A FUNCTION USED TO EDIT A NEW USER TO THE DATABASE
-  const editHandler: (note: UpdateObject | void) => Promise<void> = React.useCallback(
-    async (note) => {
-      if (!note || note === null) return;
-
-      setNoteFetch({
-        loading: true,
-        error: "",
-        success: "",
-      });
-
-      try {
-        const response: Response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/notes/note`,
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...note, _id}),
-          }
-        );
-
-        const { success, data, error } = await response.json();
-
-        if (error) {
-          throw new Error(error);
-        }
-
-        dispatch(editNote(data));
+  const editHandler: (note: UpdateObject | void) => Promise<void> =
+    React.useCallback(
+      async (note) => {
+        if (!note || note === null) return;
 
         setNoteFetch({
+          loading: true,
           error: "",
-          loading: false,
-          success: success as string,
-        });
-      } catch (error: unknown) {
-        setNoteFetch({
-          error: (error as Error).message,
-          loading: false,
           success: "",
         });
-      }
-    },
 
-    [dispatch, _id]
-  );
+        try {
+          const response: Response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/notes/note`,
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...note, _id }),
+            }
+          );
+
+          const { success, data, error } = await response.json();
+
+          if (error) {
+            throw new Error(error);
+          }
+
+          dispatch(editNote(data));
+
+          setNoteFetch({
+            error: "",
+            loading: false,
+            success: success as string,
+          });
+        } catch (error: unknown) {
+          setNoteFetch({
+            error: (error as Error).message,
+            loading: false,
+            success: "",
+          });
+        }
+      },
+
+      [dispatch, _id]
+    );
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     dispatch(getUser());
+    setFoundInitialUser(true);
   }, [dispatch]);
 
-  // if (!user && typeof window !== "undefined") router.push("/auth/login");
+  React.useEffect(() => {
+    if (user && foundInitialUser) router.push("/auth/login");
+  }, [user, router, foundInitialUser]);
 
   return (
     <section>

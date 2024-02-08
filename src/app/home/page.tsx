@@ -18,7 +18,7 @@ import Note from "@/components/Note"
 // A PAGE FOR THE /HOME ROUTE
 export default function HomePage() {
   // INSTANTIATING A ROUTER
-  const router = useRouter()
+  const router = useRouter();
 
   // DEFINING STATES
   // A STATE FOR THE NOTES ERROR AND LOADING STATES DURING FETCH
@@ -27,6 +27,10 @@ export default function HomePage() {
     loading: false,
     success: "",
   });
+
+  // A STATE TO FLAG THAT THE FIRST USER HAS ALREADY BEEN FETCHED
+  const [foundInitialUser, setFoundInitialUser] =
+    React.useState<boolean>(false);
 
   // GETTING THE CONTEXT VALUES FROM THE STORE AND ITS DISPATCH FUNCTION
   // USER
@@ -79,44 +83,51 @@ export default function HomePage() {
   }, [dispatch]);
 
   // A FUNCTION TO DELETE THE NOTE FROM THE API
-  const deleteHandler: (noteID: Types.ObjectId) => Promise<void> = React.useCallback(async(noteID) => {
-    setNotesFetch({
-      loading: true,
-      error: "",
-      success: "",
-    });
+  const deleteHandler: (noteID: Types.ObjectId) => Promise<void> =
+    React.useCallback(
+      async (noteID) => {
+        setNotesFetch({
+          loading: true,
+          error: "",
+          success: "",
+        });
 
-    try {
-      const response: Response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notes/note`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ _id: noteID })
-      });
+        try {
+          const response: Response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/notes/note`,
+            {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ _id: noteID }),
+            }
+          );
 
-      const { success, data, error } = await response.json();
+          const { success, data, error } = await response.json();
 
-      if (error) {
-        throw new Error(error);
-      }
+          if (error) {
+            throw new Error(error);
+          }
 
-      dispatch(setNotes(data));
+          dispatch(setNotes(data));
 
-      setNotesFetch({
-        error: "",
-        loading: false,
-        success: success as string,
-      });
-    } catch (error: unknown) {
-      setNotesFetch({
-        error: (error as Error).message,
-        loading: false,
-        success: "",
-      });
-    }
-  }, [dispatch]);
+          setNotesFetch({
+            error: "",
+            loading: false,
+            success: success as string,
+          });
+        } catch (error: unknown) {
+          setNotesFetch({
+            error: (error as Error).message,
+            loading: false,
+            success: "",
+          });
+        }
+      },
+      [dispatch]
+    );
 
   // A FUNCTION TO MAP THROUGH THE OBTAINED NOTES
-  function notesArrayGenerator(): JSX.Element[]{
+  function notesArrayGenerator(): JSX.Element[] {
     return notes.map((note) => (
       <Note
         key={`${note._id}`}
@@ -131,28 +142,29 @@ export default function HomePage() {
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
-    dispatch(getUser())
+    dispatch(getUser());
+    setFoundInitialUser(true);
   }, [dispatch]);
 
-  // if (!user&& typeof window !== "undefined") router.push("/auth/login")
+  React.useEffect(() => {
+    if (user && foundInitialUser) router.push("/auth/login");
+  }, [user, router, foundInitialUser]);
 
   // CALLING THE FETCHNOTES FUNCTION VIA USEEFFECT
   React.useEffect(() => {
     fetchNotes();
   }, [fetchNotes]);
 
-  return (
-    notesFetch.error || userError || notesError
-      ?
+  return notesFetch.error || userError || notesError ? (
     <p>{notesFetch.error ?? userError ?? notesError}</p>
-      :
-      notesFetch.loading || userLoading
-          ?
-        <p>Loading...</p>
-          :
-        <>
-          <section>{notesArrayGenerator()}</section>
-          {(notesFetch.success || userSuccess) && <p>{notesFetch.success ?? userSuccess}</p>}
-        </>
-  )
+  ) : notesFetch.loading || userLoading ? (
+    <p>Loading...</p>
+  ) : (
+    <>
+      <section>{notesArrayGenerator()}</section>
+      {(notesFetch.success || userSuccess) && (
+        <p>{notesFetch.success ?? userSuccess}</p>
+      )}
+    </>
+  );
 }

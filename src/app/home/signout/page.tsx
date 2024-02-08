@@ -25,6 +25,9 @@ export default function SignoutPage() {
     email: "",
     password: "",
   });
+  // A STATE TO FLAG THAT THE FIRST USER HAS ALREADY BEEN FETCHED
+  const [foundInitialUser, setFoundInitialUser] =
+    React.useState<boolean>(false);
 
   // A FUNCTION TO HANDLE THE FORMDATA
   function handleFormData(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -40,10 +43,13 @@ export default function SignoutPage() {
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
-    userDispatch(getUser())
+    userDispatch(getUser());
+    setFoundInitialUser(true);
   }, [userDispatch]);
 
-  // if (!user && typeof window !== "undefined") router.push("/auth/login");
+  React.useEffect(() => {
+    if (user && foundInitialUser) router.push("/auth/login");
+  }, [user, router, foundInitialUser]);
 
   return (
     <section>
@@ -63,12 +69,10 @@ export default function SignoutPage() {
           placeholder: "Enter password here",
         }}
         loading={loading}
-        
         submitFunction={() => {
-          userDispatch(deleteUser(formData))
-          router.push('/auth/login')
+          userDispatch(deleteUser(formData));
+          router.push("/auth/login");
         }}
-
         buttonName="Sign out"
       />
 
