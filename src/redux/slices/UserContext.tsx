@@ -174,6 +174,18 @@ const userContextSlice = createSlice({
                 user: null,
           }))
 
+          .addCase(
+                getUser.rejected, 
+                
+                (state: UserContextReducerStateType, {payload}) => ({
+                    ...state, 
+                    loading: false, 
+                    error: payload as string, 
+                    success: '', 
+                    user: null
+                })
+            )
+
           .addCase(getUser.fulfilled, (state: UserContextReducerStateType, { payload: { user, success}}) => {
                 if (!objIsUser(user)) {
                     return {
