@@ -45,7 +45,7 @@ export async function GET(request: NextRequest){
             data: foundNotes
         }, { status: STATUS_CODES.SUCCESS })
     }catch(error: unknown){
-        if((error as Error).message === "Cannot destructure property '_id' of 'properRequest.storedUser' as it is undefined."){
+        if((error as Error).message === "Cannot destructure property '_id' of 'properRequest.storedUser' as it is undefined." || "Cannot destructure property '_id' of 'r.storedUser' as it is undefined."){
             eventLogger(`${STATUS_CODES.UNAUTHORIZED}: Unauthorized`, "You are not registered in our database, try logging in or signing up", "errorLogs.txt")
             return NextResponse.json({ error:  "You are not registered in our database, try logging in or signing up" }, { status: STATUS_CODES.UNAUTHORIZED })
         }
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest){
             data: newNote
         }, { status: STATUS_CODES.CREATED })
     }catch(error: unknown){
-        if((error as Error).message === "Cannot destructure property '_id' of 'properRequest.storedUser' as it is undefined."){
+        if((error as Error).message === "Cannot destructure property '_id' of 'properRequest.storedUser' as it is undefined." || "Cannot destructure property '_id' of 'r.storedUser' as it is undefined."){
             eventLogger(`${STATUS_CODES.UNAUTHORIZED}: Unauthorized`, "You are not registered in our database, try logging in or signing up", "errorLogs.txt")
             return NextResponse.json({ error:  "You are not registered in our database, try logging in or signing up" }, { status: STATUS_CODES.UNAUTHORIZED })
         }
