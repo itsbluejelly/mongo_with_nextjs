@@ -62,7 +62,8 @@ export default function SignupPage() {
         loading={loading}
         
         submitFunction={() => {
-          userDispatch(setUser({ user: formData, route: "signup" }));
+          userDispatch(setUser({ user: formData, route: "signup" }))
+          userDispatch(getUser())
         }}
         
         buttonName="Sign up"
@@ -86,7 +87,7 @@ export default function SignupPage() {
     </section>
   ): (
     <p>
-      Sorry, but you are already signed in, click
+      Sign in successful, click
       
       <Link
         href={"/home"}

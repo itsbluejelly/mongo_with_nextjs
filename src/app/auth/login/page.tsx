@@ -61,6 +61,7 @@ export default function LoginPage(){
         
         submitFunction={() => {
           userDispatch(setUser({user: formData, route: "login"}))
+          userDispatch(getUser())
         }}
         
         buttonName="Log in"       
@@ -81,7 +82,7 @@ export default function LoginPage(){
     </section>
   ): (
     <p>
-      Sorry, but you are already logged in, click
+      Login successful, click
       
       <Link
         href={"/home"}
