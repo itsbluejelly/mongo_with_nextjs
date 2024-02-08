@@ -175,16 +175,16 @@ export default function HomePage() {
     ) : (
       <>
         <section>{notesArrayGenerator()}</section>
-        
-        {(notesFetch.success || userSuccess) && (
-          <p>{notesFetch.success ?? userSuccess}</p>
-        )}
-        
+
         <span>
           Click here to 
           <Link href="/home/signout" className="text-blue-600 underline hover:text-red-500">Sign out</Link>
           .
         </span>
+        
+        {(notesFetch.success || userSuccess) && (
+          <p>{notesFetch.success ?? userSuccess}</p>
+        )}
       </>
     )
 }

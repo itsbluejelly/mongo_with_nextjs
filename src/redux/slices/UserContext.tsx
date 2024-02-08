@@ -107,8 +107,7 @@ const userContextSlice = createSlice({
               ...state,
               loading: true,
               error: "",
-              success: "",
-              user: null,
+              success: ""
             })
           )
 
@@ -119,8 +118,7 @@ const userContextSlice = createSlice({
               ...state,
               loading: false,
               error: payload as string,
-              success: "",
-              user: null,
+              success: ""
             })
           )
 
@@ -142,16 +140,14 @@ const userContextSlice = createSlice({
             ...state,
             loading: true,
             error: "",
-            success: "",
-            user: null,
+            success: ""
           }))
 
           .addCase(setUser.rejected, (state: UserContextReducerStateType, { payload }) => ({
               ...state,
               loading: false,
               error: payload as string,
-              success: "",
-              user: null,
+              success: ""
             })
           )
 
@@ -161,7 +157,7 @@ const userContextSlice = createSlice({
                 loading: false,
                 error: "",
                 success: success as string,
-                user: null,
+                user: null
               };
             }
           )
