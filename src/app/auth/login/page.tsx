@@ -61,7 +61,6 @@ export default function LoginPage(){
         
         submitFunction={() => {
           userDispatch(setUser({user: formData, route: "login"}))
-          router.push("/home");
         }}
         
         buttonName="Log in"       

@@ -61,7 +61,6 @@ export default function SignoutPage() {
         loading={loading}
         submitFunction={() => {
           userDispatch(deleteUser(formData));
-          router.push("/auth/login");
         }}
         buttonName="Sign out"
       />

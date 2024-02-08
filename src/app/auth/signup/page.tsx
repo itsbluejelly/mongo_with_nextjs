@@ -63,7 +63,6 @@ export default function SignupPage() {
         
         submitFunction={() => {
           userDispatch(setUser({ user: formData, route: "signup" }));
-          router.push("/home");
         }}
         
         buttonName="Sign up"
