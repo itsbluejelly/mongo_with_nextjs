@@ -88,3 +88,7 @@ export type NotesContextReducerActionType = ObjectTypeGenerator<{
 
 // A TYPE FOR THE NOTES FETCH
 export type NotesFetch = Omitter<UserContextReducerStateType, "user">
+// A TYPE FOR THE ADDTOPIC FORMDATA
+export type AddTopicFormData = Prettier<Omitter<NoteType, "_id"> & { description: string }>
+// A TYPE FOR THE ADDTOPIC NOTE
+export type AddObject = Omitter<Note, "userID">
