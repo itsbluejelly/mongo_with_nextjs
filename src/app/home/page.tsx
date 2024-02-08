@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {useRouter} from "next/navigation"
   // IMPORTING ACTIONS
 import { getUser } from "@/redux/slices/UserContext";
-import { setNotes, deleteNote } from "@/redux/slices/NotesContext";
+import { setNotes } from "@/redux/slices/NotesContext";
   // IMPORTING TYPES
 import { RootState, RootDispatch } from "@/redux/store";
 import { NotesFetch } from "@/types/Types";
@@ -63,7 +63,7 @@ export default function HomePage() {
         throw new Error(error);
       }
 
-      dispatch(deleteNote(data));
+      dispatch(setNotes(data));
 
       setNotesFetch({
         error: "",
