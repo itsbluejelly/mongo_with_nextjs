@@ -8,5 +8,5 @@ import React from "react"
 // A PAGE FOR THE / ROUTE
 export default function Page(){
     const router = useRouter()
-    React.useEffect(() => {router.push('/home')})
+    React.useEffect(() => {router.push('/auth/login')})
 }
