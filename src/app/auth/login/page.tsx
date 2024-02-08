@@ -36,9 +36,6 @@ export default function LoginPage(){
     setFormData(prevData => ({...prevData, [name]: value}))
   }
 
-  // SETTING THE USER TO THE NEW USER
-  React.useEffect(() => {userDispatch(getUser())}, [userDispatch]);
-
   return (
     <section>
       <h1 className="text-bold text-2xl">Welcome, log in</h1>
@@ -62,6 +59,7 @@ export default function LoginPage(){
         
         submitFunction={() => {
           userDispatch(setUser({user: formData, route: "login"}))
+          userDispatch(getUser());
           if(user) router.push("/home");
         }}
         
@@ -69,7 +67,7 @@ export default function LoginPage(){
       />
 
       <span>
-        Click here to 
+        Click here to  
         <Link href={'/auth/signup'} className="text-blue-600 underline hover:text-red-500">sign up</Link>
       </span>
 

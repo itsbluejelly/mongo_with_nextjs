@@ -13,17 +13,17 @@ export default function Navbar(){
     // OBTAINING THE USER VALUE FROM ITS CONTEXT
     const {user} = useSelector((state: RootState) => state.UserContext)
     
-    if(user){
-        return (
-          <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
+    return user 
+        ? 
+    <nav className="flex justify-between items-center bg-slate-800 px-8 py-3">
             <Link href={"/home"} className="text-white font-bold">
-              HomePage
+                HomePage
             </Link>
 
             <Link href={"/home/addTopic"} className="bg-white p-2">
-              Add Topic
+                Add Topic
             </Link>
-          </nav>
-        );
-    }
+        </nav>
+        :
+    <h1 className="text-xl font-bold underline">Notes Application</h1>
 }

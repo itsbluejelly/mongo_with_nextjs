@@ -14,6 +14,7 @@ import { NotesFetch } from "@/types/Types";
 import {Types} from "mongoose"
   // IMPORTING COMPONENTS
 import Note from "@/components/Note"
+import Link from "next/link"
 
 // A PAGE FOR THE /HOME ROUTE
 export default function HomePage() {
@@ -27,10 +28,6 @@ export default function HomePage() {
     loading: false,
     success: "",
   });
-
-  // A STATE TO FLAG THAT THE FIRST USER HAS ALREADY BEEN FETCHED
-  const [foundInitialUser, setFoundInitialUser] =
-    React.useState<boolean>(false);
 
   // GETTING THE CONTEXT VALUES FROM THE STORE AND ITS DISPATCH FUNCTION
   // USER
@@ -142,27 +139,52 @@ export default function HomePage() {
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {dispatch(getUser());}, [dispatch]);
-  React.useEffect(() => {if(!user) setFoundInitialUser(true)}, [user]);
-
-  React.useEffect(() => {
-    if (foundInitialUser) router.push("/auth/login");
-  }, [router, foundInitialUser]);
 
   // CALLING THE FETCHNOTES FUNCTION VIA USEEFFECT
   React.useEffect(() => {
     fetchNotes();
   }, [fetchNotes]);
 
-  return notesFetch.error || userError || notesError ? (
-    <p>{notesFetch.error ?? userError ?? notesError}</p>
-  ) : notesFetch.loading || userLoading ? (
-    <p>Loading...</p>
-  ) : (
-    <>
-      <section>{notesArrayGenerator()}</section>
-      {(notesFetch.success || userSuccess) && (
-        <p>{notesFetch.success ?? userSuccess}</p>
-      )}
-    </>
-  );
+  return !user 
+      ?
+    <p>
+      Sorry, but you are not authenticated, click
+      
+      <Link
+        href={"/auth/login"}
+        className="text-blue-600 underline hover:text-red-500"
+      >
+        log in
+      
+      </Link>
+      
+      or
+      
+      <Link
+        href={"/auth/signup"}
+        className="text-blue-600 underline hover:text-red-500"
+      >
+        sign up
+      </Link>
+    </p> 
+      :
+    notesFetch.error || userError || notesError ? (
+      <p>{notesFetch.error ?? userError ?? notesError}</p>
+    ) : notesFetch.loading || userLoading ? (
+      <p>Loading...</p>
+    ) : (
+      <>
+        <section>{notesArrayGenerator()}</section>
+        
+        {(notesFetch.success || userSuccess) && (
+          <p>{notesFetch.success ?? userSuccess}</p>
+        )}
+        
+        <span>
+          Click here to 
+          <Link href="/home/signout" className="text-blue-600 underline hover:text-red-500">Sign out</Link>
+          .
+        </span>
+      </>
+    )
 }

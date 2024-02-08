@@ -25,9 +25,6 @@ export default function SignoutPage() {
     email: "",
     password: "",
   });
-  // A STATE TO FLAG THAT THE FIRST USER HAS ALREADY BEEN FETCHED
-  const [foundInitialUser, setFoundInitialUser] =
-    React.useState<boolean>(false);
 
   // A FUNCTION TO HANDLE THE FORMDATA
   function handleFormData(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -42,14 +39,9 @@ export default function SignoutPage() {
   const userDispatch = useDispatch<RootDispatch>();
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
-  React.useEffect(() => {userDispatch(getUser());}, [userDispatch]);
-  React.useEffect(() => {if (!user) setFoundInitialUser(true)}, [user]);
+  React.useEffect(() => {userDispatch(getUser())}, [userDispatch]);
 
-  React.useEffect(() => {
-    if (foundInitialUser) router.push("/auth/login");
-  }, [router, foundInitialUser]);
-
-  return (
+  return user ? (
     <section>
       <h1 className="text-bold text-2xl">Goodbye, sign out</h1>
 
@@ -80,7 +72,7 @@ export default function SignoutPage() {
           href={"/home"}
           className="text-blue-600 underline hover:text-red-500"
         >
-          go back home
+          go back home.
         </Link>
       </span>
 
@@ -90,5 +82,22 @@ export default function SignoutPage() {
         (error || success) && <p>{error ?? success}</p>
       )}
     </section>
+  ) : (
+    <p>
+      Sorry, but you are not authenticated, click
+      <Link
+        href={"/auth/login"}
+        className="text-blue-600 underline hover:text-red-500"
+      >
+        log in
+      </Link>
+      or
+      <Link
+        href={"/auth/signup"}
+        className="text-blue-600 underline hover:text-red-500"
+      >
+        sign up
+      </Link>
+    </p>
   );
 }

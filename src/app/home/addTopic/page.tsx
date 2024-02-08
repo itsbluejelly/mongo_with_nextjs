@@ -4,7 +4,6 @@
   // IMPORTING MODULES
 import React from "react"
 import { useSelector, useDispatch } from "react-redux";
-import {useRouter} from "next/navigation"
   // IMPORTING ACTIONS
 import { getUser } from "@/redux/slices/UserContext";
 import { addNote } from "@/redux/slices/NotesContext";
@@ -17,9 +16,6 @@ import Link from "next/link";
 
 // A PAGE FOR THE /HOME/ADDTOPIC ROUTE
 export default function AddTopicPage() {
-  // INSTANTIATING A ROUTER
-  const router = useRouter();
-
   // DEFINING STATES
   // DEFINING A STATE FOR THE FORMDATA
   const [formData, setFormData] = React.useState<AddTopicFormData>({
@@ -33,10 +29,6 @@ export default function AddTopicPage() {
     loading: false,
     success: "",
   });
-
-  // A STATE TO FLAG THAT THE FIRST USER HAS ALREADY BEEN FETCHED
-  const [foundInitialUser, setFoundInitialUser] =
-    React.useState<boolean>(false);
 
   // GETTING THE CONTEXT VALUES FROM THE STORE AND ITS DISPATCH FUNCTION
   // USER
@@ -134,15 +126,8 @@ export default function AddTopicPage() {
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {dispatch(getUser());}, [dispatch]);
-  React.useEffect(() => {
-    if (!user) setFoundInitialUser(true);
-  }, [user]);
 
-  React.useEffect(() => {
-    if (foundInitialUser) router.push("/auth/login");
-  }, [router, foundInitialUser]);
-
-  return (
+  return user ? (
     <section>
       <h1 className="text-bold text-2xl">Add a note</h1>
 
@@ -183,5 +168,26 @@ export default function AddTopicPage() {
         (userSuccess && <p>{noteFetch.success ?? userSuccess}</p>)
       )}
     </section>
+  ) : (
+    <p>
+      Sorry, but you are not authenticated, click
+      
+      <Link
+        href={"/auth/login"}
+        className="text-blue-600 underline hover:text-red-500"
+      >
+        log in
+      
+      </Link>
+      
+      or
+      
+      <Link
+        href={"/auth/signup"}
+        className="text-blue-600 underline hover:text-red-500"
+      >
+        sign up
+      </Link>
+    </p>
   );
 }

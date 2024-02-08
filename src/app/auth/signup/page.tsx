@@ -38,9 +38,6 @@ export default function SignupPage() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   }
 
-  // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
-  React.useEffect(() => {userDispatch(getUser())}, [userDispatch]);
-
   return (
     <section>
       <h1 className="text-bold text-2xl">Hello, sign up</h1>
@@ -62,6 +59,7 @@ export default function SignupPage() {
         
         submitFunction={() => {
           userDispatch(setUser({ user: formData, route: "signup" }));
+          userDispatch(getUser());
           if (user) router.push("/home");
         }}
         
@@ -69,7 +67,7 @@ export default function SignupPage() {
       />
 
       <span>
-        Click here to
+        Click here to 
         <Link
           href={"/auth/login"}
           className="text-blue-600 underline hover:text-red-500"
