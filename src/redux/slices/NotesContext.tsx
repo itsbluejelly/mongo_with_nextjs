@@ -19,10 +19,6 @@ const notesContextSlice = createSlice({
 
     reducers: {
         setNotes: (state: NotesContextReducerStateType, {payload: notes}: NotesContextReducerActionType["SET_NOTES"]): NotesContextReducerStateType => {
-            if(!arrayHasNotes(notes)){
-                return {...state, error: "The notes data is not of the required type", notes: []}
-            }
-
             return {
               ...state,
               error: "",
@@ -45,10 +41,6 @@ const notesContextSlice = createSlice({
         },
 
         addNote: (state: NotesContextReducerStateType, {payload: newNote}: NotesContextReducerActionType["ADD_NOTE"]): NotesContextReducerStateType => {
-            if(!objIsNote(newNote)){
-                return {...state, error: "The new note is not of the required type"}
-            }
-
             return {
               ...state,
               error: "",
@@ -57,10 +49,6 @@ const notesContextSlice = createSlice({
         },
 
         editNote: (state: NotesContextReducerStateType, {payload: editedNote}: NotesContextReducerActionType["ADD_NOTE"]): NotesContextReducerStateType => {
-            if(!objIsNote(editedNote)){
-                return {...state, error: "The edited note is not of the required type"}
-            }
-
             const updatedNotes: NoteType[] = state.notes.map(note => note._id === editedNote._id ? editedNote : note)
 
             return {
