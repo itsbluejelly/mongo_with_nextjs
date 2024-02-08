@@ -145,7 +145,9 @@ export default function AddTopicPage() {
           placeholder: "Enter description here",
         }}
         loading={userLoading || noteFetch.loading}
-        submitFunction={() => addHandler(convertFormData(formData))}
+        
+        submitFunction={() => {addHandler(convertFormData(formData))}}
+        
         buttonName="Add Note"
       />
 

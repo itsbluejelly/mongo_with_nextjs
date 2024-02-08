@@ -38,7 +38,11 @@ export default function SignupPage() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   }
 
-  return (
+  React.useEffect(() => {
+    userDispatch(getUser());
+  }, [userDispatch]);
+
+  return !user ? (
     <section>
       <h1 className="text-bold text-2xl">Hello, sign up</h1>
 
@@ -59,8 +63,7 @@ export default function SignupPage() {
         
         submitFunction={() => {
           userDispatch(setUser({ user: formData, route: "signup" }));
-          userDispatch(getUser());
-          if (user) router.push("/home");
+          router.push("/home");
         }}
         
         buttonName="Sign up"
@@ -82,5 +85,18 @@ export default function SignupPage() {
         (error || success) && <p>{error ?? success}</p>
       )}
     </section>
+  ): (
+    <p>
+      Sorry, but you are already signed in, click
+      
+      <Link
+        href={"/home"}
+        className="text-blue-600 underline hover:text-red-500"
+      >
+         here
+      </Link>
+      
+      to go to the home page
+    </p>
   );
 }

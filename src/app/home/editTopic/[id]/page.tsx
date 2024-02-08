@@ -139,10 +139,12 @@ export default function EditTopicPage(){
           placeholder: "Enter description here",
         }}
         loading={userLoading || noteFetch.loading}
+        
         submitFunction={() => {
           editHandler(convertFormData(formData));
           router.push("/home");
         }}
+        
         buttonName="Edit Note"
       />
 

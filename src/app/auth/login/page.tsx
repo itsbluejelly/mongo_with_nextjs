@@ -36,7 +36,9 @@ export default function LoginPage(){
     setFormData(prevData => ({...prevData, [name]: value}))
   }
 
-  return (
+  React.useEffect(() => {userDispatch(getUser())}, [userDispatch])
+
+  return !user ? (
     <section>
       <h1 className="text-bold text-2xl">Welcome, log in</h1>
       
@@ -59,8 +61,7 @@ export default function LoginPage(){
         
         submitFunction={() => {
           userDispatch(setUser({user: formData, route: "login"}))
-          userDispatch(getUser());
-          if(user) router.push("/home");
+          router.push("/home");
         }}
         
         buttonName="Log in"       
@@ -79,5 +80,18 @@ export default function LoginPage(){
         (error || success) && <p>{error ?? success}</p>
       }
     </section>
-  )
+  ): (
+    <p>
+      Sorry, but you are already logged in, click
+      
+      <Link
+        href={"/home"}
+        className="text-blue-600 underline hover:text-red-500"
+      >
+         here
+      </Link>
+      
+      to go to the home page
+    </p>
+  );
 }
