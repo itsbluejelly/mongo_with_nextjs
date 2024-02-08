@@ -120,9 +120,8 @@ export default function EditTopicPage(){
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     dispatch(getUser());
-  }, [dispatch]);
-
-  RootVerifier(user, "/home");
+    RootVerifier(user, "/home");
+  }, [dispatch, user]);
 
   return (
     <section>

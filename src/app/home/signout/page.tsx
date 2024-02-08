@@ -42,10 +42,9 @@ export default function SignoutPage() {
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
-    userDispatch(getUser());
-  }, [userDispatch]);
-
-  RootVerifier(user, "/home");
+    userDispatch(getUser())
+    RootVerifier(user, "/home");
+  }, [userDispatch, user]);
 
   return (
     <section>
@@ -65,12 +64,7 @@ export default function SignoutPage() {
           placeholder: "Enter password here",
         }}
         loading={loading}
-        
-        submitFunction={() => {
-          userDispatch(deleteUser(formData))
-          router.refresh()
-        }}
-        
+        submitFunction={() => userDispatch(deleteUser(formData))}
         buttonName="Sign out"
       />
 

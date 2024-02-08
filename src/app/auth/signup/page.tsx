@@ -43,9 +43,8 @@ export default function SignupPage() {
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     userDispatch(getUser());
-  }, [userDispatch]);
-
-  RootVerifier(user, "/auth");
+    RootVerifier(user, "/auth");
+  }, [userDispatch, user]);
 
   return (
     <section>
@@ -65,12 +64,7 @@ export default function SignupPage() {
           placeholder: "Enter password here",
         }}
         loading={loading}
-        
-        submitFunction={() => {
-          userDispatch(setUser({ user: formData, route: "signup" }));
-          router.refresh()
-        }}
-        
+        submitFunction={() => userDispatch(setUser({ user: formData, route: "signup" }))}
         buttonName="Sign up"
       />
 

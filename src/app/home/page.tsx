@@ -129,10 +129,9 @@ export default function HomePage() {
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
-
-  RootVerifier(user, "/home");
+    dispatch(getUser())
+    RootVerifier(user, "/home");
+  }, [dispatch, user]);
 
   // CALLING THE FETCHNOTES FUNCTION VIA USEEFFECT
   React.useEffect(() => {

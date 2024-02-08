@@ -41,9 +41,8 @@ export default function LoginPage(){
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     userDispatch(getUser());
-  }, [userDispatch]);
-  
-  RootVerifier(user, "/auth");
+    RootVerifier(user, "/auth");
+  }, [userDispatch, user]);
 
   return (
     <section>
@@ -65,12 +64,7 @@ export default function LoginPage(){
         }}
 
         loading={loading}
-        
-        submitFunction={() => {
-          userDispatch(setUser({user: formData, route: "login"}))
-          router.refresh()
-        }}
-        
+        submitFunction={() => userDispatch(setUser({user: formData, route: "login"}))}
         buttonName="Log in"       
       />
 
