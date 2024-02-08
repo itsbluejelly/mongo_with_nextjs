@@ -122,7 +122,7 @@ export default function EditTopicPage(){
     dispatch(getUser());
   }, [dispatch]);
 
-  if (!user && typeof window !== "undefined") router.push("/auth/login");
+  // if (!user && typeof window !== "undefined") router.push("/auth/login");
 
   return (
     <section>

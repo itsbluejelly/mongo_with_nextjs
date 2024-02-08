@@ -43,7 +43,7 @@ export default function SignupPage() {
     userDispatch(getUser());
   }, [userDispatch]);
 
-  if (user && typeof window !== "undefined") router.push("/home");
+  // if (user && typeof window !== "undefined") router.push("/home");
 
   return (
     <section>
@@ -63,7 +63,12 @@ export default function SignupPage() {
           placeholder: "Enter password here",
         }}
         loading={loading}
-        submitFunction={() => userDispatch(setUser({ user: formData, route: "signup" }))}
+        
+        submitFunction={() => {
+          userDispatch(setUser({ user: formData, route: "signup" }))
+          router.push("/home");
+        }}
+        
         buttonName="Sign up"
       />
 

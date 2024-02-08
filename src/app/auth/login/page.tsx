@@ -41,7 +41,7 @@ export default function LoginPage(){
     userDispatch(getUser());
   }, [userDispatch]);
 
-  if (user && typeof window !== "undefined") router.push("/home");
+  // if (user && typeof window !== "undefined") router.push("/home");
 
   return (
     <section>
@@ -63,7 +63,12 @@ export default function LoginPage(){
         }}
 
         loading={loading}
-        submitFunction={() => userDispatch(setUser({user: formData, route: "login"}))}
+        
+        submitFunction={() => {
+          userDispatch(setUser({user: formData, route: "login"}))
+          router.push("/home");
+        }}
+        
         buttonName="Log in"       
       />
 

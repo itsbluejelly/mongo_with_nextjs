@@ -43,7 +43,7 @@ export default function SignoutPage() {
     userDispatch(getUser())
   }, [userDispatch]);
 
-  if (!user && typeof window !== "undefined") router.push("/auth/login");
+  // if (!user && typeof window !== "undefined") router.push("/auth/login");
 
   return (
     <section>
@@ -63,7 +63,12 @@ export default function SignoutPage() {
           placeholder: "Enter password here",
         }}
         loading={loading}
-        submitFunction={() => userDispatch(deleteUser(formData))}
+        
+        submitFunction={() => {
+          userDispatch(deleteUser(formData))
+          router.push('/auth/login')
+        }}
+
         buttonName="Sign out"
       />
 
