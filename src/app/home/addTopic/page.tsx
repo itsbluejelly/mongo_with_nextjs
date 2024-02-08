@@ -135,7 +135,7 @@ export default function AddTopicPage() {
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {dispatch(getUser());}, [dispatch]);
   React.useEffect(() => {
-    if (user) setFoundInitialUser(true);
+    if (!user) setFoundInitialUser(true);
   }, [user]);
 
   React.useEffect(() => {

@@ -142,7 +142,7 @@ export default function HomePage() {
 
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {dispatch(getUser());}, [dispatch]);
-  React.useEffect(() => {if(user) setFoundInitialUser(true)}, [user]);
+  React.useEffect(() => {if(!user) setFoundInitialUser(true)}, [user]);
 
   React.useEffect(() => {
     if (foundInitialUser) router.push("/auth/login");
