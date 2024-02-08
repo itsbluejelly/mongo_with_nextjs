@@ -76,7 +76,12 @@ export default function EditTopicPage(){
   const editHandler: (note: UpdateObject | void) => Promise<void> =
     React.useCallback(
       async (note) => {
-        if (!note || note === null) return;
+        if (!note || note === null){
+          return setNoteFetch({
+            loading: false,
+            error: "No note to add to database, ensure all fields are filled correctly",
+            success: "",
+        })};
 
         setNoteFetch({
           loading: true,

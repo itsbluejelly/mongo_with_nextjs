@@ -78,7 +78,7 @@ export default function AddTopicPage() {
         if (!note || note === null) {
           return setNoteFetch({
             loading: false,
-            error: "No note is provided for addition to the database",
+            error: "No note is provided for addition to the database, ensure all fields are filled appropriately",
             success: "",
           });
         }

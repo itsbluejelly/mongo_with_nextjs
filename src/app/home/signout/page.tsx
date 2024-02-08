@@ -83,7 +83,7 @@ export default function SignoutPage() {
     </section>
   ) : (
     <p>
-      Sorry, but you are not authenticated, click
+      You are already signed out, click
       <Link
         href={"/auth/login"}
         className="text-blue-600 underline hover:text-red-500"
