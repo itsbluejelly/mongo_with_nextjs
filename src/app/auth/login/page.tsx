@@ -1,8 +1,6 @@
 "use client"
 
 // IMPORTING NECESSARY FILES
-  // IMPORTING HOOKS
-import RootVerifier from "@/hooks/RootVerifier";
   // IMPORTING MODULES
 import React from "react"
 import { useSelector, useDispatch } from "react-redux";
@@ -43,8 +41,6 @@ export default function LoginPage(){
     userDispatch(getUser());
     if (user) router.push("/home");
   }, [userDispatch, user, router]);
-
-  RootVerifier(user, "/auth");
 
   return (
     <section>
