@@ -43,7 +43,7 @@ export default function SignupPage() {
     userDispatch(getUser());
   }, [userDispatch]);
 
-  if (user) router.push("/home")
+  if (user && typeof window !== "undefined") router.push("/home");
 
   return (
     <section>

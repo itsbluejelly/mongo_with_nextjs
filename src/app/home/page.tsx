@@ -134,7 +134,7 @@ export default function HomePage() {
     dispatch(getUser())
   }, [dispatch]);
 
-  if (!user) router.push("/auth/login")
+  if (!user&& typeof window !== "undefined") router.push("/auth/login")
 
   // CALLING THE FETCHNOTES FUNCTION VIA USEEFFECT
   React.useEffect(() => {

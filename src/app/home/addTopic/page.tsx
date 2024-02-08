@@ -131,7 +131,7 @@ export default function AddTopicPage() {
     dispatch(getUser());
   }, [dispatch]);
 
-  if (!user) router.push("/auth/login")
+  if (!user && typeof window !== "undefined") router.push("/auth/login");
 
   return (
     <section>

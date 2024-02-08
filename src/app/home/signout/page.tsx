@@ -43,7 +43,7 @@ export default function SignoutPage() {
     userDispatch(getUser())
   }, [userDispatch]);
 
-  if(!user) router.push("/auth/login")
+  if (!user && typeof window !== "undefined") router.push("/auth/login");
 
   return (
     <section>
