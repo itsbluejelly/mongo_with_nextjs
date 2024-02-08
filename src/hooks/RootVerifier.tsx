@@ -12,7 +12,7 @@ export default function RootVerifier(user: UserType | null, path: "/home" | "/au
     const router = useRouter();
 
     // CHECKING IF THIS CODE IS RUNNING ON THE CLIENT SIDE
-    if (typeof window === "undefined") {
+    if (typeof window !== "undefined") {
             // PERFORMING NECESSARY REROUTING ON CLIENT SIDE
         if (!user && path === "/home") {
             router.push("/auth/login");
