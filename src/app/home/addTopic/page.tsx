@@ -129,8 +129,9 @@ export default function AddTopicPage() {
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     dispatch(getUser());
-    if (!user) router.push("/auth/login")
-  }, [dispatch, user, router]);
+  }, [dispatch]);
+
+  if (!user) router.push("/auth/login")
 
   return (
     <section>

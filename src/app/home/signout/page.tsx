@@ -41,8 +41,9 @@ export default function SignoutPage() {
   // SETTING THE USER TO THE NEW USER AND VALIDATING THE ROUTE
   React.useEffect(() => {
     userDispatch(getUser())
-    if(!user) router.push("/auth/login")
-  }, [userDispatch, user, router]);;
+  }, [userDispatch]);
+
+  if(!user) router.push("/auth/login")
 
   return (
     <section>
