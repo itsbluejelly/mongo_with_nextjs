@@ -4,7 +4,7 @@
 // IMPORTING MODULES
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {useRouter} from "next/navigation"
+import {useRouter, useSearchParams} from "next/navigation"
 // IMPORTING ACTIONS
 import { getUser } from "@/redux/slices/UserContext";
 import { editNote } from "@/redux/slices/NotesContext";
@@ -18,7 +18,7 @@ import Link from "next/link";
 // A PAGE FOR THE /HOME/EDITTOPIC/[ID] ROUTE
 export default function EditTopicPage(){
   // GETTING THE ID PARAMETER AND ROUTER
-  const queryParams = new URLSearchParams();
+  const queryParams = useSearchParams();
   const _id = queryParams.get("id");
   const router = useRouter()
 
@@ -142,7 +142,6 @@ export default function EditTopicPage(){
         
         submitFunction={() => {
           editHandler(convertFormData(formData));
-          router.push("/home");
         }}
         
         buttonName="Edit Note"
