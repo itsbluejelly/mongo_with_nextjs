@@ -61,7 +61,7 @@ export default function LoginPage(){
         }}
 
         loading={loading}
-        submitFunction={() => setUser({user: formData, route: "login"})}
+        submitFunction={() => userDispatch(setUser({user: formData, route: "login"}))}
         buttonName="Log in"       
       />
 

@@ -61,7 +61,7 @@ export default function SignoutPage() {
           placeholder: "Enter password here",
         }}
         loading={loading}
-        submitFunction={() => deleteUser(formData)}
+        submitFunction={() => userDispatch(deleteUser(formData))}
         buttonName="Sign out"
       />
 

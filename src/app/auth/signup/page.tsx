@@ -61,7 +61,7 @@ export default function SignupPage() {
           placeholder: "Enter password here",
         }}
         loading={loading}
-        submitFunction={() => setUser({ user: formData, route: "signup" })}
+        submitFunction={() => userDispatch(setUser({ user: formData, route: "signup" }))}
         buttonName="Sign up"
       />
 
