@@ -1,6 +1,5 @@
 // IMPORTING NECESSARY TYPES
 import {UserType, NoteType} from "@/types/Types"
-import {isValidObjectId} from "mongoose"
 
 // A GUARD TO VALIDATE IF AN OBJECT IS A USER
 export function objIsUser(obj: unknown): obj is UserType{
@@ -12,7 +11,7 @@ export function objIsUser(obj: unknown): obj is UserType{
 export function objIsNote(obj: unknown): obj is NoteType{
     return typeof obj === "object" && obj !== null &&
     "title" in obj && typeof obj.title === "string" &&
-    "_id" in obj && isValidObjectId(obj._id)
+    "_id" in obj && typeof obj._id === "string"
 }
 
 // A GUARD TO VALIDATE IF AN ARRAY CONTAINS NOTES
@@ -21,7 +20,7 @@ export function arrayHasNotes(array: unknown): array is NoteType[]{
         return array.every(item => (
             typeof item === "object" && item !== null &&
             "title" in item && typeof item.title === "string" &&
-            "_id" in item && isValidObjectId(item._id)
+            "_id" in item && typeof item._id === "string"
         ))
     }
 
