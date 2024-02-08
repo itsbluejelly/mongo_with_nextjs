@@ -89,7 +89,7 @@ export default function EditTopicPage(){
             {
               method: "PATCH",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...note, _id }),
+              body: JSON.stringify({ ...note, _id })
             }
           );
 

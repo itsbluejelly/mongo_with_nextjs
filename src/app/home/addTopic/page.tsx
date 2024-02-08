@@ -83,6 +83,8 @@ export default function AddTopicPage() {
           });
         }
 
+        console.log(JSON.stringify(note))
+
         setNoteFetch({
           loading: true,
           error: "",
@@ -95,7 +97,7 @@ export default function AddTopicPage() {
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...note }),
+              body: JSON.stringify(note)
             }
           );
 
