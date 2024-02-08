@@ -93,7 +93,7 @@ export default function AddTopicPage() {
 
         try {
           const response: Response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/notes/note`,
+            `${process.env.NEXT_PUBLIC_API_URL}/notes`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
